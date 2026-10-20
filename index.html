@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Powder to Protein Calculator</title>
+<meta name="description" content="Convert your whey protein powder serving into grams of protein.">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#fff;color:#171717;font-family:Arial,sans-serif}main{max-width:768px;margin:0 auto;padding:32px 20px 40px}h1{font-size:clamp(14px,4.6vw,24px);white-space:nowrap;line-height:1.3;margin:0 0 16px}img{display:block;width:100%;height:auto}.calculator{margin-top:0;margin-bottom:28px;padding:28px;border:1px solid #dce5df;border-radius:16px;background:#f6f9f7}.product-row{display:flex;align-items:center;gap:16px;margin:0 0 24px}.product-row img{width:68px;height:84px;object-fit:contain;flex-shrink:0;border-radius:8px;background:#fff}.product{margin:0;color:#526158;line-height:1.5}label{display:block;font-weight:600;margin-bottom:10px}.input-wrap{display:flex;align-items:center;gap:12px}input{width:100%;min-width:0;font:inherit;font-size:22px;padding:14px;border:1px solid #9baea1;border-radius:8px;background:white;color:#171717}input:focus{outline:3px solid #c2decd;outline-offset:2px}.unit{color:#526158}.result{margin-top:24px;padding-top:22px;border-top:1px solid #dce5df}.result-label{display:block;color:#526158;margin-bottom:8px}output{display:block;color:#22603c;font-size:40px;font-weight:700}.note{margin:16px 0 0;color:#526158;font-size:14px;line-height:1.5}.error{min-height:20px;margin:8px 0 0;color:#a22c20;font-size:14px}@media(max-width:480px){main{padding:24px 16px}.calculator{padding:22px}}
+footer{margin-top:20px;text-align:center;font-size:12px;color:#68716b}</style>
+</head>
+<body><main>
+<section class="calculator" aria-labelledby="calculator-title">
+<h1 id="calculator-title">Powder to Protein Calculator</h1>
+<div class="product-row"><img src="protein-tub.jpg" alt="Optimum Nutrition Gold Standard 100% Whey tub" width="68" height="84"><p class="product">Optimum Nutrition Gold Standard 100% Whey</p></div>
+<label for="powder">Protein powder amount</label>
+<div class="input-wrap"><input id="powder" type="text" inputmode="decimal" value="50" autocomplete="off" aria-describedby="input-error"><span class="unit">grams</span></div>
+<p id="input-error" class="error" aria-live="polite"></p>
+<div class="result"><span class="result-label">Protein in your serving</span><output id="protein" for="powder" aria-live="polite">38.7 g</output></div>
+<p id="macros" class="note" aria-live="polite">Also in your serving: 2.4 g fat and 3.25 g carbohydrates.</p>
+</section>
+<img src="photo.jpeg" alt="Two cats resting together on a blue blanket">
+<footer>By Maxim Nicu</footer>
+</main>
+<script>
+const powder = document.getElementById('powder');
+const result = document.getElementById('protein');
+const error = document.getElementById('input-error');
+const macros = document.getElementById('macros');
+function updateProtein() {
+  const raw = powder.value.trim().replace(',', '.');
+  const grams = Number(raw);
+  const valid = raw !== '' && /^(?:\d+(?:\.\d*)?|\.\d+)$/.test(raw) && Number.isFinite(grams) && Number.isFinite(grams * 0.774);
+  powder.setAttribute('aria-invalid', String(raw !== '' && !valid));
+  error.textContent = raw !== '' && !valid ? 'Enter a valid amount of 0 grams or more.' : '';
+  const format = value => value.toLocaleString('en-US', {maximumFractionDigits: 2});
+  macros.textContent = valid ? `Also in your serving: ${format(grams * 0.048)} g fat and ${format(grams * 0.065)} g carbohydrates.` : 'Also in your serving: — g fat and — g carbohydrates.';
+  result.textContent = valid ? (grams * 0.774).toLocaleString('en-US', {maximumFractionDigits: 2}) + ' g' : '—';
+}
+powder.addEventListener('input', updateProtein);
+updateProtein();
+</script>
+</body></html>
+
