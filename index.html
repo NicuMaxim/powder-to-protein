@@ -18,7 +18,7 @@ footer{margin-top:20px;text-align:center;font-size:12px;color:#68716b}</style>
 <div class="input-wrap"><input id="powder" type="text" inputmode="decimal" value="50" autocomplete="off" aria-describedby="input-error"><span class="unit">grams</span></div>
 <p id="input-error" class="error" aria-live="polite"></p>
 <div class="result"><span class="result-label">Protein in your serving</span><output id="protein" for="powder" aria-live="polite">38.7 g</output></div>
-<p id="macros" class="note" aria-live="polite">Also in your serving: 2.4 g fat and 3.25 g carbohydrates.</p>
+<p id="macros" class="note" aria-live="polite">Also in your serving: 193.5 kcal, 2.4 g fat and 3.25 g carbohydrates.</p>
 </section>
 <img src="photo.jpeg" alt="Two cats resting together on a blue blanket">
 <footer>By Maxim Nicu</footer>
@@ -31,11 +31,11 @@ const macros = document.getElementById('macros');
 function updateProtein() {
   const raw = powder.value.trim().replace(',', '.');
   const grams = Number(raw);
-  const valid = raw !== '' && /^(?:\d+(?:\.\d*)?|\.\d+)$/.test(raw) && Number.isFinite(grams) && Number.isFinite(grams * 0.774);
+  const valid = raw !== '' && /^(?:\d+(?:\.\d*)?|\.\d+)$/.test(raw) && Number.isFinite(grams) && Number.isFinite(grams * 3.87);
   powder.setAttribute('aria-invalid', String(raw !== '' && !valid));
   error.textContent = raw !== '' && !valid ? 'Enter a valid amount of 0 grams or more.' : '';
   const format = value => value.toLocaleString('en-US', {maximumFractionDigits: 2});
-  macros.textContent = valid ? `Also in your serving: ${format(grams * 0.048)} g fat and ${format(grams * 0.065)} g carbohydrates.` : 'Also in your serving: — g fat and — g carbohydrates.';
+  macros.textContent = valid ? `Also in your serving: ${format(grams * 3.87)} kcal, ${format(grams * 0.048)} g fat and ${format(grams * 0.065)} g carbohydrates.` : 'Also in your serving: — kcal, — g fat and — g carbohydrates.';
   result.textContent = valid ? (grams * 0.774).toLocaleString('en-US', {maximumFractionDigits: 2}) + ' g' : '—';
 }
 powder.addEventListener('input', updateProtein);
